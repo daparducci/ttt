@@ -1,7 +1,7 @@
 //Define Global Variables
 const PLAYERS = {
-    '1': 'red',
-    '-1': 'blue',
+    '1': 'X',
+    '-1': 'O',
     'null': ''
 }
 var board, winner, turn;
@@ -22,23 +22,28 @@ var cells = document.querySelectorAll('.cells');
 
 init();
 function init() {
-    board = [null, null, null, null, null, null, null, null, null]
+    
 for (i=0; i<cells.length; i++) {
     cells[i].addEventListener('click', handleClick);
 }
+
+board = [null, null, null, null, null, null, null, null, null]
 turn = 1;
 winner = null;
 render();
 }
 
 function render () {
-//  board.forEach(function(cells, cellIdx) {
-//          cells[cellIdx].style.backGround = PLAYERS[cellIdx];
-//      })
- }
+ board.forEach(function(cell, cellIdx) {
+         cells[cellIdx].textContent = PLAYERS[cell];
+     })
+
+    for(i=0; i<cells.length; i++) {
     if (winner) {
      msgElem.textContent = `${PLAYERS[winner]} WINS!`;
+    }
  }
+}
 
 
 function handleClick(evt) {
@@ -46,14 +51,9 @@ function handleClick(evt) {
     if (board[cellIdx] || winner) return;
     board[cellIdx] = turn;
     turn *= -1;
-    //winner = checkWinner();
-    //console.log(board[cellIdx]);
-     //console.log(board);
-   checkTurn();
-   
-   winner = checkWinner();
-   render();
-   //console.log(winner);
+    checkTurn();
+    winner = checkWinner();
+    render();
 }
 
 function checkTurn () {
@@ -61,13 +61,12 @@ function checkTurn () {
         msgElem.textContent = `Player One's Turn`;
     } else if (turn === -1) {
         msgElem.textContent
-    = `Player Two's Turn`;     }
+    = `Player Two's Turn`;     
+    }
 }
 
-function checkWinner () {
-    for (var i=0; i < winning.length; i++) {
-        if (Math.abs(board[winning[i][0]] + board[winning[i][1]] + board[winning[i][2]]) === 3) {
-            return board[winning[i][0]];
-            }
+function checkWinner() {
+    for (var i = 0; i < winning.length; i++) {
+        if (Math.abs(board[winning[i][0]] + board[winning[i][1]] + board[winning[i][2]]) === 3) return board[winning[i][0]]; 
     }
 }
